@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(:version => 20101111130256) do
     t.string   "name"
     t.string   "url"
     t.text     "bio"
-    t.integer  "num_of_voted"
-    t.integer  "num_of_presentations"
+    t.integer  "num_of_votes",         :default => 0
+    t.integer  "num_of_presentations", :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,8 +1,7 @@
 <% title "Submitting a new presentation on #{@presentation.meetup.name}"%>
 
-<%=form_for @presentation do |f|%>
+<%=form_for @presentation, :url => meetup_presentations_path do |f|%>
   <%= f.error_messages %>
-  <%= f.hidden_field :meetup_id%>
   <p>
     <%=f.label :name, "Presentation name"%>
     <%=f.text_field :name%>

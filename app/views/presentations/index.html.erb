@@ -13,9 +13,9 @@
   <tbody>
     <%@presentations.each do |presentation|%>
       <tr>
-        <td><%=link_to presentation.name, presentation_url(presentation.id)%></td>
+        <td><%=link_to presentation.name, meetup_presentation_path(presentation.meetup,presentation.id)%></td>
         <td><%=link_to presentation.user.account.name, account_url(presentation.user.account)%></td>
-        <td><%=presentation.human_date%></td>
+        <td><%=l(presentation.created_at, :format => :just_date)%></td>
         <td><%=link_to presentation.meetup.name, meetup_url(presentation.meetup)%></td>
         <td><%=presentation.meetup.num_of_attendees%></td>
       </tr>

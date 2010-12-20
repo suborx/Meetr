@@ -18,8 +18,8 @@
     <li>
       <%=label :happend_at, t("talk.date")%>
       <span id="happening_at" class="v">
-        <%=@meetup.human_date%> at <%=@meetup.happening_at.strftime("%H:%M")%>
-        (<%=t('time.in')%> <%=distance_of_time_in_words(Time.now, @meetup.happening_at)%>)
+        <%=l(@meetup.happening_at, :format => :just_date) %> at <%=l(@meetup.happening_at, :format => :just_time)%>
+        (<%=distance_of_time_in_words(Time.now, @meetup.happening_at)%>)
       </span>
     </li>
   </ul>
@@ -29,20 +29,18 @@
     <%@meetup.presentations.each do |presentation|%>
       <li>
         <%=image_tag presentation.user.account.gravatar, :size => "32x32"%>
-        <strong><%=link_to presentation.name, presentation_path(presentation.id)%></strong>
+        <strong><%=link_to presentation.name, meetup_presentation_path(presentation.id)%></strong>
                 <br/>
         <%=link_to presentation.user.account.name, presentation.user.account.url%> 
         &lt;<%=presentation.user.email%>&gt;
-        <%=link_to image_tag("vote_like.gif"), { :controller => :presentations, :action => :vote, 
-                                               :id => presentation.id} if user_signed_in?%>
+        <%=link_to image_tag("vote_like.gif"), meetup_presentation_vote_path(@meetup,presentation) if user_signed_in?%>
                                                <small>(<%=presentation.votes.count%> <%=t "votes"%>)</small>
       </li>
     <%end%>
   </ul>
   <p>
     <span class="a">
-      <%=link_to t("talk.submit"), { :controller => :presentations, :action => :new, 
-                                       :"presentation[meetup_id]" => @meetup.id}%>
+      <%=link_to t("talk.submit"), new_meetup_presentation_path(@meetup)%>
     </span>
   </p>
 </div>
@@ -51,7 +49,7 @@
   <h2>
     <%=t("meetup.attendees")%>
     <%if user_signed_in? and not @meetup.user_attends?(current_user)%>
-      <%=link_to t("meetup.attend")+'!', url_for(:controller => :meetups, :action => :attend, :id => @meetup.id, :class => :green)%>
+      <%=link_to t("meetup.attend")+'!',  meetup_attend_path(@meetup) %>
     <%end%>
   </h2>
   <ul class="attendees">

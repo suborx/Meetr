@@ -14,14 +14,14 @@ en:
     duration: "Duration"
     date: "Date"
     submitted: "Submitted at"
-    submit: "Submit your talk"
+    submit: "Add talk" #"Submit your talk"
     voted: "Voted for this presentation"
   meetup:
     presentations: "Presentations"
     attendees: "People in this meetup"
     attend: "Attend"
-    attend_small: "attend"
-    not_attend: "not attend"
+    attend_small: "Attend"
+    not_attend: "Not attend"
     attendance: "Will %{status} this event"
     name: "Name"
     date: "Date"
@@ -31,6 +31,9 @@ en:
     actions: "Actions"
     attending: "Attend!"
     create: "Create new"
+    delete: "Delete"
+    edit: "Edit"
+
   menu:
     home: "Home"
     meetups: "Meetups"
@@ -54,5 +57,8 @@ en:
     traditional: "Old fashion registration"
   time:
     in: "in"
+    formats: 
+      just_date: "%d %B %Y"
+      just_time: "%H:%M"
   profile:
     presentations: "Presentations"

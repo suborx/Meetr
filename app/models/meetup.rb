@@ -1,10 +1,11 @@
 class Meetup < ActiveRecord::Base
-  belongs_to :user
-  has_many :meetup_users
-  has_many :attendees, :class_name => 'User', :through => :meetup_users, :source => :user, :order => "created_at DESC"
-  has_many :presentations, :order => "created_at DESC"
-  has_many :timelines, :order => "created_at DESC"
 
+  belongs_to :creator, :class_name => "User", :foreign_key => :user_id
+  has_many :meetup_users
+  has_many :users, :through => :meetup_users, :order => "created_at DESC"
+  alias attendees users
+  has_many :presentations
+  has_many :timelines
 
   validates :name, :presence => true, :length => { :minimum => 4 }, :uniqueness => true
   validates :location, :presence => true
@@ -13,52 +14,42 @@ class Meetup < ActiveRecord::Base
   after_create :add_creator_to_attendees
   after_update :add_update_timeline
 
-  def human_date
-    self.happening_at.strftime("%d %B %Y")
-  end
+  default_scope order("created_at desc")
 
   def add_attendee(user)
-    if MeetupUser.find(:first, :conditions => { :user_id => user.id, :meetup_id => self.id})
-      return false
-    else
-      self.attendees << user
-      user.timelines.create(:meetup_id => self.id, :message => "is attending #{self.name}")
-    end
+    return false if users.include?(user) 
+    self.attendees << user
+    user.timelines.create(:meetup_id => id, :message => "is attending #{name}")
   end
 
   def attendee(user)
-    MeetupUser.find(:first, :conditions => { :user_id => user.id, :meetup_id => self.id})
+    meetup_users.where(:user_id => user.id).first
   end
 
   def update_attendee(user, attending = true)
-    mu = MeetupUser.find(:first, :conditions => { :user_id => user.id, :meetup_id => self.id})
+    mu = attendee(user)
     mu.update_attributes!(:is_attending => attending)
-    if attending
-      user.timelines.create(:meetup_id => self.id, :message => "is will now attend #{self.name}")
-    else
-      user.timelines.create(:meetup_id => self.id, :message => "will not attend #{self.name}")
-    end
+    message = attending ? "is will now attend #{name}" : "will not attend #{name}"
+    user.timelines.create(:meetup_id => id, :message => message)
   end
 
   def user_attends?(user)
     mu = attendee(user)
-    return false unless mu
-    return false unless mu.is_attending
-    return true
+    true if mu && mu.is_attending
   end
 
   def num_of_attendees
-    self.meetup_users.count(:conditions => { :is_attending => true })
+    meetup_users.count(:conditions => { :is_attending => true })
   end
 
   private
 
   def add_creator_to_attendees
-    self.add_attendee(self.user)
+    add_attendee(creator)
   end
 
   def add_update_timeline
-    self.user.timelines << Timeline.new(:meetup_id => self.id, :message => "just changed details about #{self.name}")
+    self.creator.timelines << Timeline.new(:meetup_id => id, :message => "just changed details about #{name}")
   end
 
 end

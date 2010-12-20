@@ -16,6 +16,7 @@ cs:
     submitted: "Přidané"
     submit: "Nahrát svou prezentaci"
     voted: "Hlasuj pro tuhle prezentaci"
+    delete: "Odstránit"
   meetup:
     presentations: "Prezentace"
     attendees: "Lidé na téhle akci"
@@ -31,6 +32,8 @@ cs:
     actions: "Akce"
     attending: "Zúčastním se!"
     create: "Uspořádat novou akci"
+    delete: "Zmazat"
+    edit: "Upravit"
   menu:
     home: "Úvod"
     meetups: "Akce"
@@ -52,7 +55,5 @@ cs:
   signin:
     account: "Přihlásit se přes Váš účet v"
     traditional: "Vytvořit účet ručně"
-  time:
-    in: "za"
   profile:
     presentations: "Prezentace"

@@ -34,13 +34,16 @@ Meetr::Application.routes.draw do
 
   resources :accounts
 
-  resources :meetups
-  match 'meetups/attend/:id' => 'meetups#attend'
-  match 'meetups/not_attend/:id' => 'meetups#not_attend'
+  
+  resources :meetups do
+    match 'attend' => 'meetups#attend'
+    match 'not_attend' => 'meetups#not_attend'
+    resources :presentations
+    match 'presentations/vote/:id' => 'presentations#vote', :as => :presentation_vote
+  end
 
-  resources :presentations
-  match 'presentations/vote/:id' => 'presentations#vote'
-
+  match 'presentations' => 'presentations#index', :as => :presentations
+  
   resources :timelines
   resources :accounts
 

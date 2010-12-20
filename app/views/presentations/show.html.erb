@@ -7,7 +7,7 @@
 <div class="status">
   <%=t "talk.presenter"%>: <%=link_to @presentation.user.account.name, account_url(@presentation.user.account)%><br/>
   <%=t "talk.duration"%>: <%=@presentation.duration/60%> minutes<br/>
-  <%=t "talk.submitted"%>: <%=@presentation.human_date%>
+  <%=t "talk.submitted"%>: <%=l(@presentation.created_at, :format => :just_date)%>
 </div>
 
 <h2><%=t("votes_big")%> (<%=@presentation.votes.count%>):</h2>

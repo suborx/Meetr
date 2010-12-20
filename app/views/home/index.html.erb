@@ -7,7 +7,7 @@ Discuss <strong>Ruby</strong> development, both within web frameworks (<a href="
 <ul class="home-meetups">
   <li><strong><%=t "welcome.upcoming"%>:</strong></li>
   <%@meetups.each do |meetup|%>
-    <li><%=link_to meetup.name, meetup_url(meetup.id)%> @ <%=meetup.human_date%></li>
+    <li><%=link_to meetup.name, meetup_url(meetup.id)%> @ <%=l(meetup.created_at, :format => :just_date)%></li>
   <%end%>
 </ul>
 
@@ -28,7 +28,7 @@ Discuss <strong>Ruby</strong> development, both within web frameworks (<a href="
     <%@presentations.each do |p|%>
       <tr>
         <td><%=link_to p.meetup.name, meetup_url(p.meetup)%></td>
-        <td><%=link_to p.name, presentation_url(p)%></td>
+        <td><%=link_to p.name, meetup_presentation_url(p.meetup,p)%></td>
         <td><%=link_to p.user, account_url(p.user.account)%></td>
         <td><%=p.duration/60%> minutes</td>
       </tr>

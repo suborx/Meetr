@@ -1,40 +1,17 @@
 class PresentationsController < ApplicationController
+  
+  inherit_resources
+  belongs_to :meetup
+  respond_to :html
   before_filter :authenticate_user!
+  before_filter :set_user, :only => :create
 
   def index
     if params[:user_id]
       user = User.find(params[:user_id])
-      @presentations = user.presentations.find(:all, :order => "created_at DESC")
+      @presentations = user.presentations.all
     else
-      @presentations = Presentation.find(:all, :order => "created_at DESC")
-    end
-    respond_to do |format|
-      format.html { render :index }
-    end
-  end
-
-  def new
-    @meetup = Meetup.find(params[:presentation][:meetup_id])
-    @presentation = current_user.presentations.new(:meetup_id => @meetup.id)
-    respond_to do |format|
-      format.html { render :new }
-    end
-  end
-
-  def create
-    @presentation = current_user.presentations.new(params[:presentation])
-    if @presentation.valid? and @presentation.save
-      flash[:notice] = "Thank you for submitting your talk!"
-      redirect_to meetup_path(@presentation.meetup_id)
-    else
-      render :new
-    end
-  end
-
-  def show
-    @presentation = Presentation.find(params[:id])
-    respond_to do |format|
-      format.html { render :show }
+      @presentations = Presentation.all
     end
   end
 
@@ -51,4 +28,9 @@ class PresentationsController < ApplicationController
     redirect_to :back
   end
 
+  private 
+  
+  def set_user
+   params[:presentation][:user_id] = current_user.id
+  end
 end

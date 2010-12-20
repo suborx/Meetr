@@ -1,59 +1,11 @@
 class MeetupsController < ApplicationController
+
+   inherit_resources
+   respond_to :html
+
    before_filter :authenticate_user!, :except => [ :show ]
 
-   def index
-     @meetups = Meetup.find(:all, :order => "created_at DESC ")
-     respond_to do |format|
-       format.html { render :index }
-     end
-   end
-
-   def new
-     @meetup = current_user.meetups.new(params[:meetup])
-     respond_to do |format|
-       format.html { render :new }
-     end
-   end
-
-   def create
-     @meetup = current_user.meetups.new(params[:meetup])
-     if @meetup.valid? and @meetup.save
-       return redirect_to(meetups_path)
-     else
-       render :new
-     end
-   end
-
-   def edit
-     @meetup = current_user.meetups.find(params[:id])
-     @submit_label = "Save changes"
-     respond_to do |format|
-       format.html { render :edit }
-     end
-   end
-
-   def update
-     @meetup = current_user.meetups.find(params[:id])
-     @meetup.update_attributes(params[:meetup])
-     if @meetup.valid? and @meetup.save
-       return redirect_to(meetups_path)
-     else
-       render :edit
-     end
-   end
-
-   def destroy
-     @meetup = current_user.meetups.find(params[:id])
-     @meetup.destroy!
-     redirect_to meetups_path
-   end
-
-   def show
-     @meetup = Meetup.find(params[:id])
-     respond_to do |format|
-       format.html { render :show }
-     end
-   end
+   create!{ meetups_path }
 
    def attend
      meetup = Meetup.find(params[:id])
@@ -77,5 +29,11 @@ class MeetupsController < ApplicationController
      flash[:error] = "You successfully removed yourself to this meetup"
      redirect_to meetup_path(meetup.id)
    end
+
+  private
+
+    def begin_of_association_chain
+      request.get? ? super : current_user
+    end
 
 end
