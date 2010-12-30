@@ -31,6 +31,6 @@ class PresentationsController < ApplicationController
   private 
   
   def set_user
-   params[:presentation][:user_id] = current_user.id
+    params[:presentation][:user_id] = current_user.id
   end
 end

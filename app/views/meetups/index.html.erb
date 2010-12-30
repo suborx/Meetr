@@ -32,10 +32,10 @@
           </span>
           <%if current_user.eql?(meetup.creator)%>
             <span class="a">
-              <%=link_to t('meetup.delete'), url_for(:controller => :meetups, :action => :destroy, :id => meetup.id)%>
+              <%=link_to t('meetup.delete'), meetup_path(meetup), :method => :delete%>
             </span>
             <span class="a">
-              <%=link_to t('meetup.edit'), url_for(:controller => :meetups, :action => :edit, :id => meetup.id)%>
+              <%=link_to t('meetup.edit'), edit_meetup_path(meetup)%>
             </span>
           <%end%>
         </td>

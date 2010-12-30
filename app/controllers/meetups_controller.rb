@@ -8,7 +8,7 @@ class MeetupsController < ApplicationController
    create!{ meetups_path }
 
    def attend
-     meetup = Meetup.find(params[:id])
+     meetup = Meetup.find(params[:meetup_id])
      if meetup.add_attendee(current_user)
        flash[:notice] = "You successfully added yourself to this meetup"
      else
@@ -23,7 +23,7 @@ class MeetupsController < ApplicationController
    end
 
    def not_attend
-     meetup = Meetup.find(params[:id])
+     meetup = Meetup.find(params[:meetup_id])
      meetup.add_attendee(current_user)
      meetup.update_attendee(current_user, false)
      flash[:error] = "You successfully removed yourself to this meetup"

@@ -13,7 +13,6 @@ class ApplicationController < ActionController::Base
     if params[:lang]
       session['session.language'] = params[:lang]
     end
-    I18n.locale = 'cs'#session['session.language'] || accept_locale || 'en'
+    I18n.locale = session['session.language'] || accept_locale || 'en'
   end
-
 end

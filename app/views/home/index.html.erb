@@ -29,7 +29,7 @@ Discuss <strong>Ruby</strong> development, both within web frameworks (<a href="
       <tr>
         <td><%=link_to p.meetup.name, meetup_url(p.meetup)%></td>
         <td><%=link_to p.name, meetup_presentation_url(p.meetup,p)%></td>
-        <td><%=link_to p.user, account_url(p.user.account)%></td>
+        <td><%=link_to p.user.account.name, account_url(p.user.account)%></td>
         <td><%=p.duration/60%> minutes</td>
       </tr>
     <%end%>
